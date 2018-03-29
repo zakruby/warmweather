@@ -88,7 +88,6 @@ public class Utility {
     }
     public static Weather handleWeatherResponse(String response){
         try {
-           // Log.d("Utility",response);
 //            if(response.startsWith("\ufeff")){
 //                response = response.substring(1);
 //            }

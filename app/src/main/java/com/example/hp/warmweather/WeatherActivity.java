@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,12 +84,12 @@ public class WeatherActivity extends AppCompatActivity {
         SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString=prefs.getString("weather",null);
         final String weatherId;
-        if (weatherString!=null){
+        if (weatherString!=null){//如果有缓存
             Weather weather=Utility.handleWeatherResponse(weatherString);
             weatherId=weather.basic.weatherId;
             showWeatherInfo(weather);
-        }else {
-            weatherId=getIntent().getStringExtra("weather_id");
+        }else {//没有缓存
+            weatherId=getIntent().getStringExtra("weather_id");//从列表柊获取的
             weatherLayout.setVisibility(View.INVISIBLE);
             requestWeather(weatherId);
         }
@@ -120,6 +121,7 @@ public class WeatherActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String bingpic=response.body().string();
+                //Log.d("Utility",bingpic);
                 SharedPreferences.Editor editor=PreferenceManager.getDefaultSharedPreferences(
                         WeatherActivity.this).edit();
                 editor.putString("bing_pic",bingpic);
